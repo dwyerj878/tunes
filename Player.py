@@ -5,6 +5,7 @@ pygst.require("0.10")
 import gst
 import gtk
 from MusicFile import MusicFile
+import logging
 
 #
 # Music file Player
@@ -13,7 +14,8 @@ class Player():
     
     # new player
     def __init__(self):
-        print "Creating Player"
+        self.logger = logging.getLogger('tunes.player')
+        self.logger.debug("Creating Player")
         self.pipeline = gst.Pipeline("pipeline")
         self.volume = 50
         self.mf = None
@@ -36,7 +38,7 @@ class Player():
         self.bus = self.pipeline.get_bus()
         self.bus.add_signal_watch()
         self.bus.connect("message", self.on_message)
-        print "Player created"
+        self.logger.debug("Player created")
         
     # set controller
     def set_controller(self,  controller):
@@ -52,13 +54,13 @@ class Player():
         #message = 
         #self.bus.post()
         pipeline.set_state(gst.STATE_PLAYING)
-        print "linked!"
+        self.logger.debug("linked!")
         
     # start playing a music file object
     def play(self,  mf):
         #file_name = "'"+self.path+"/"+self.name+"'"
         file_name = mf.path+"/"+mf.name
-        print "Playing : " + file_name
+        self.logger.info("Playing : " + file_name)
         self.pipeline.set_state(gst.STATE_NULL)
         self.mf = mf
         
@@ -97,8 +99,7 @@ class Player():
             songLevel = float(self.volume)/100 * float(self.mf.volume)/100
         else :
             songLevel = level
-        
-        print "Setting Volume " + str(self.volume) + " " + str(level) 
+        self.logger.debug("Setting Volume " + str(self.volume) + " " + str(level) )
         
         if self.pipeline is not None:
            self.pipeline.get_by_name("volume").set_property("volume", songLevel)
@@ -152,7 +153,7 @@ class Player():
         """
         @param location: time to seek to, in nanoseconds
         """
-        print "seeking" + str(location)
+        self.logger.debug("seeking" + str(location))
         gst.debug("seeking to %r" % location)
         event = gst.event_new_seek(1.0, gst.FORMAT_TIME,
             gst.SEEK_FLAG_FLUSH | gst.SEEK_FLAG_ACCURATE,

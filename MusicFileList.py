@@ -9,7 +9,7 @@ import sys
 from MusicFile import MusicFile
 
 from PyQt4 import QtCore, QtGui
-
+import logging
 
 #
 # Music File List
@@ -18,14 +18,15 @@ class MusicFileList():
         
     def __init__(self,  path):        
         self.music_files = {}
+        self.logger = logging.getLogger('tunes.mfl')
         self.populate(path)
+        
 
     def populate(self, base_directory):
-        print "Populate : "+base_directory
+        self.logger.debug("Populate : "+base_directory)
         for r,d,f in os.walk(base_directory):
             for files in f:
                 if files.endswith(".flac"):
-                    # print "adding" + files + ":" + r
                     mf = MusicFile(files,  r)
                     self.add(mf)
                     

@@ -7,17 +7,19 @@ import gst
 from PyQt4.QtGui import QDialog
 from PyQt4.QtGui import QMainWindow
 from UIFileListWindow import Ui_MusicFileListWindow
+import logging
 
 class MusicFileListWindow(QMainWindow,  Ui_MusicFileListWindow):
 
     def __init__(self,  data,  parent=None):
-        print "Creating Window"        
+        self.logger = logging.getLogger('tunes.file.list.window')
+        self.logger.debug("Creating Window" )
         super(MusicFileListWindow, self).__init__(parent)
 
         # Set up the user interface from Designer.
-        print "Setup UI"
+        self.logger.debug("Setup UI")
         self.setupUi(self)
-        print "Window Created"
+        self.logger.debug("Window Created")
         
         self.populate(data)
         
@@ -31,7 +33,7 @@ class MusicFileListWindow(QMainWindow,  Ui_MusicFileListWindow):
         self.tableWidget.setRowCount(len(self.model.music_files))
         
         for mf in self.model.music_files.values():        
-            print mf.name+"("+mf.path+", "+str(mf.pitch)+", "+str(mf.tempo)+")"
+            self.logger.debug(mf.name+"("+mf.path+", "+str(mf.pitch)+", "+str(mf.tempo)+")")
             nameItem = QtGui.QTableWidgetItem(mf.name)
             nameItem.setFlags(QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
             
@@ -58,11 +60,11 @@ class MusicFileListWindow(QMainWindow,  Ui_MusicFileListWindow):
             
     def nextSong(self):
         """next"""
-        print "next"
+        self.logger.debug("next")
         
     def previousSong(self):
         """previous"""
-        print "prev"
+        self.logger.debug("prev")
     
     # master volume
     def volumeSliderMoved(self,  value):  
