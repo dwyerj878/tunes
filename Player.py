@@ -4,7 +4,7 @@ import pygst
 pygst.require("0.10")
 import gst
 import gtk
-from MusicFile import MusicFile
+from data.MusicFile import MusicFile
 import logging
 
 #

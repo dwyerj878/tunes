@@ -11,8 +11,8 @@ import gtk
 
 import logging
 
-from MusicFile import MusicFile
-from MusicFileList import MusicFileList
+from data.MusicFile import MusicFile
+from data.MusicFileList import MusicFileList
 
 from MusicFileListWindow import MusicFileListWindow
 from PyQt4 import QtCore, QtGui
