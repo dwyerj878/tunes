@@ -88,25 +88,34 @@ class MusicFileListWindow(QMainWindow,  Ui_MusicFileListWindow):
     def set_controller(self,  controller):
         self.controller = controller
     
+    # update songNameLabel
     # set song name
     def set_song_name(self,  name):
         self.songNameLabel.setText(name)
         
+    #update songPitchSlider
     # -1000 - 1000
     def set_song_pitch(self,  value):
         self.songPitchSlider.setValue(value)
 
+    # update songVolumeSlider
     # 0 - 150
     def set_song_volume(self,  value):
         self.songVolumeSlider.setValue(value)
-
+        
+    # update songTempoSlider
     # 100 - 100
     def set_song_tempo(self,  value):
         self.songTempoSlider.setValue(value)
 
     def set_seek_values(self,  position,  duration): 
+        self.logger.info("setting seek position " + str(position) + " and duration" + str(duration))
+        self.songPositionSlider.maximum = duration  
+        self.songPositionSlider.setRange(0, duration)      
         self.songPositionSlider.value = position
-        self.songPositionSlider.maximum = duration
+
+        
+        self.logger.info("get seek position " + str(self.songPositionSlider.value) + " and duration" + str(self.songPositionSlider.maximum ))
         
     def songPositionSliderMoved(self,  value):
         self.controller.seek(value)

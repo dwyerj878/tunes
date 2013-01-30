@@ -137,6 +137,7 @@ class Player():
                
     def query_position(self):
         "Returns a (position, duration) tuple"
+
         try:
             position, format = self.pipeline.query_position(gst.FORMAT_TIME)
         except:
@@ -147,13 +148,13 @@ class Player():
         except:
             duration = gst.CLOCK_TIME_NONE
 
-        return (position, duration)
+        return (position/ gst.SECOND, duration/ gst.SECOND)
 
     def seek(self, location):
         """
         @param location: time to seek to, in nanoseconds
         """
-        self.logger.debug("seeking" + str(location))
+        self.logger.debug("seeking to %r" % location)
         gst.debug("seeking to %r" % location)
         event = gst.event_new_seek(1.0, gst.FORMAT_TIME,
             gst.SEEK_FLAG_FLUSH | gst.SEEK_FLAG_ACCURATE,

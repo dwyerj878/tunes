@@ -4,12 +4,14 @@
 # Music file
 #
 class MusicFile():
-    
-    pitch=0
-    tempo=0
-    volume=100
-
     def __init__(self, name,  path):
         self.name = name
         self.path = path
+        self.title = name
+        self.pitch=0
+        self.tempo=0
+        self.volume=100
+        self.duration = 0 
+        
+
 

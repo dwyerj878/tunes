@@ -5,6 +5,7 @@ import pygst
 pygst.require("0.10")
 import gst
 import logging
+import sys
 
 #
 # The C in MVC
@@ -14,12 +15,17 @@ import logging
 #
 class Controller():
     
+    #
+    # create a new controller
     def __init__(self,  file_list_window,  player):
         self.mf = None
         self.view = file_list_window
         self.player = player
         self.logger = logging.getLogger('tunes.controller')
     
+    #
+    # Set the song and play it
+    #
     def set_song(self,  mf):
         self.logger.debug("set song")
         self.mf = mf
@@ -29,7 +35,12 @@ class Controller():
         self.view.set_song_volume(mf.volume)
         self.player.play(mf)
         position,  duration = self.player.query_position()
-        self.view.set_seek_values(position,  duration)        
+        self.multiplier = sys.maxint/duration
+        self.logger.debug("duration : " + str(duration))
+        self.logger.debug("multiplier : " + str(self.multiplier))
+        self.mf.duration = duration
+        self.view.set_seek_values(0,  duration/self.multiplier)
+        
         
     def start_stop(self):
         self.logger.debug("start/stop")
@@ -83,4 +94,5 @@ class Controller():
             self.logger.debug(message)
             
     def seek(self,  value):
-        self.player.seek(value)
+        
+        self.player.seek(value*self.multiplier*gst.SECOND)
