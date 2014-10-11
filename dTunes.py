@@ -37,8 +37,6 @@ def create_log():
     # add the handlers to the logger
     logger.addHandler(fh)
     logger.addHandler(ch)    
-    
-
 
 if __name__ == "__main__":
     create_log()
